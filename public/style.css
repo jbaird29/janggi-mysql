@@ -1,0 +1,157 @@
+body {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background-image: url("images/background/table-3-edit.jpg");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+  background-blend-mode: luminosity;
+}
+h1 {
+  margin-bottom: 5px;
+}
+
+/* HEADER CONTAINERS */
+.container-header {
+  margin: auto;
+  width: 570px;
+  display: flex;
+  align-items: center;
+}
+.container-col-btn {
+  width: 114px;
+}
+.container-col-msg {
+  width: 450px;
+}
+.color-blue {
+  color: rgb(11, 0, 173);
+}
+.color-red {
+  color: rgb(165, 33, 22);
+}
+button {
+  width: 100px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* GAME CONTAINERS */
+.container-game {
+  margin: auto;
+  display: flex;
+  width: 564px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+}
+.container-col-pieces {
+  width: 112px;
+  margin-bottom: 4px;
+  margin-right: 1px
+}
+.container-col-board {
+ width: 450px;
+ border: 1px solid black;
+}
+
+
+/* CAPTURED PIECES */
+#captured-pieces-red {
+  font-size: 14px;
+  width: 100%;
+  height: 50%;
+  color: rgb(165, 33, 22);
+  background-color: rgb(230, 150, 150);
+  border: 1px solid black;
+}
+#captured-pieces-blue {
+  font-size: 14px;
+  width: 100%;
+  height: 50%;
+  color: rgb(11, 0, 173);
+  background-color: rgb(210, 210, 240);
+  border: 1px solid black;
+}
+
+
+/* BOARD */
+.board {
+  display: table;
+  margin: auto;
+}
+.row {
+  display: table-row;
+}
+.square {
+  display: table-cell;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.square-img {
+  width: 50px;
+  vertical-align: middle;
+  z-index: 1;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.square-img-highlight {
+  filter: sepia(75%);
+}
+.piece {
+  width: 37px;
+  z-index: 2;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+.piece-highlight {
+  outline: 2px solid green;
+}
+.piece-captured {
+  position: static;
+}
+
+
+/* IMAGE ROTATING */
+.square-img-left-edge {
+  transform: rotate(90deg);
+}
+.square-img-right-edge {
+  transform: rotate(-90deg);
+}
+.square-img-top-edge {
+  transform: rotate(180deg);
+}
+.square-img-top-right-corner {
+  transform: rotate(180deg);
+}
+.square-img-top-left-corner {
+  transform: rotate(90deg);
+}
+.square-img-bottom-right-corner {
+  transform: rotate(-90deg);
+}
+.square-img-top-left-palace-edge {
+  transform: rotate(180deg) scaleX(-1);
+}
+.square-img-top-right-palace-edge {
+  transform: rotate(180deg);
+}
+.square-img-top-left-palace {
+  transform: rotate(0deg);
+}
+.square-img-top-right-palace {
+  transform: rotate(-90deg);
+}
+.square-img-bottom-left-palace-edge {
+  transform: rotate(0deg);
+}
+.square-img-bottom-right-palace-edge {
+  transform: scaleX(-1);
+}
+.square-img-bottom-left-palace {
+  transform: rotate(90deg);
+}
+.square-img-bottom-right-palace {
+  transform: rotate(180deg);
+}

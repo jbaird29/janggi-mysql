@@ -11,9 +11,11 @@ module.exports.updateGame = function(gameID, startTime, endTime, nextColor, game
     const q_game_over     = mysql.escape(gameOver);
     const q_winner        = mysql.escape(winner);
     
-    return `INSERT INTO games(game_id, start_time, end_time, next_color, game_over, winner)
+    const sql =  `INSERT INTO games(game_id, start_time, end_time, next_color, game_over, winner)
     VALUES (${q_game_id}, FROM_UNIXTIME(${q_start_time}), FROM_UNIXTIME(${q_end_time}), ${q_next_color}, ${q_game_over}, ${q_winner})  
     ON DUPLICATE KEY UPDATE end_time=FROM_UNIXTIME(${q_end_time}), next_color=${q_next_color}, game_over=${q_game_over}, winner=${q_winner};`
+    // console.log(sql)
+    return sql
 }
 
 module.exports.updatePiece = function(pieceID, gameID, color, type, square, isCaptured) {
@@ -24,15 +26,9 @@ module.exports.updatePiece = function(pieceID, gameID, color, type, square, isCa
     const q_square        = mysql.escape(square);
     const q_is_captured   = mysql.escape(isCaptured);
 
-    return `INSERT INTO pieces(piece_id, game_id, color, type, square, is_captured)
+    const sql =  `INSERT INTO pieces(piece_id, game_id, color, type, square, is_captured)
     VALUES (${q_piece_id}, ${q_game_id}, ${q_color}, ${q_type}, ${q_square}, ${q_is_captured})  
     ON DUPLICATE KEY UPDATE square=${q_square}, is_captured=${q_is_captured};`
-}
-
-module.exports.test = function(gameID, startTime, endTime) {
-    const q_game_id       = mysql.escape(gameID);
-    const q_start_time    = mysql.escape(startTime);
-    const q_end_time      = mysql.escape(endTime);
-
-    return `SELECT ${q_game_id} AS game_id, ${q_start_time} AS start_time, ${q_end_time} AS end_time`
+    // console.log(sql)
+    return sql
 }

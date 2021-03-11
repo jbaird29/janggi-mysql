@@ -34,7 +34,7 @@ app.post("/save-game", function(req, res) {
         }
     );
     pieces.forEach(piece => {
-        connection.query(buildSQL.updatePiece(piece.id, piece.gameID, piece.color, piece.type, piece.square, piece.isCaptured),
+        piece && connection.query(buildSQL.updatePiece(piece.id, piece.gameID, piece.color, piece.type, piece.square, piece.isCaptured),
             function(error, results, fields) { 
                 if (error) throw error;
                 results.message && console.log(results.message);

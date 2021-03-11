@@ -18,12 +18,12 @@ class JanggiGame {
       localStorage.setItem('gameID', this.id)
     }
 
-    async saveGameToDB() {
+    async saveGameToDB(piecesToUpdate=null) {
       const gameProps = {
         id: this.id,
         startTime: this.startTime,
         endTime: this.endTime,
-        pieces: this.pieces,
+        pieces: piecesToUpdate || this.pieces,
         nextColor: this.nextColor,
         gameOver: this.gameOver,
         winner: this.winner
@@ -296,12 +296,13 @@ class JanggiGame {
       if (pass) {
         this.nextColor = this.nextColor === 'red' ? 'blue' : 'red'
         this.saveGameToLocal()
-        this.saveGameToDB()
+        this.saveGameToDB([])
         return {valid: true, response: this.getHeaderText()}
       }
       try {
         const startPiece = this.board[start]
         const endPiece = this.board[end]
+        const piecesChanged = endPiece ? [startPiece, endPiece] : [startPiece]
         // determine if the move is falid
         if (!this.getValidMoves(startPiece).includes(end)) {
           return {valid: false, response: this.getHeaderText()}
@@ -320,13 +321,13 @@ class JanggiGame {
             this.gameOver = true
             this.winner = this.nextColor === 'red' ? 'blue' : 'red'
             this.saveGameToLocal()
-            this.saveGameToDB()
+            this.saveGameToDB(piecesChanged)
             return {valid: true, response: this.getHeaderText()}
           }
         }
         // otherwise save game and return valid response
         this.saveGameToLocal()
-        this.saveGameToDB()
+        this.saveGameToDB(piecesChanged)
         return {valid: true, response: this.getHeaderText()}
       } catch(e) {
         console.log(e)

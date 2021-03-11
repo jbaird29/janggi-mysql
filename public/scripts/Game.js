@@ -4,21 +4,8 @@ class JanggiGame {
       this.board = this.buildBoard()
     }
   
-    saveGameToLocal() {
-      const gameProps = {
-        id: this.id,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        pieces: this.pieces,
-        nextColor: this.nextColor,
-        gameOver: this.gameOver,
-        winner: this.winner
-      }
-      localStorage.setItem('gameProps',JSON.stringify(gameProps))
-      localStorage.setItem('gameID', this.id)
-    }
-
     async saveGameToDB(piecesToUpdate=null) {
+      localStorage.setItem('gameID', this.id)
       const gameProps = {
         id: this.id,
         startTime: this.startTime,
@@ -30,7 +17,7 @@ class JanggiGame {
       }
       const fetchOptions = { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(gameProps)}
       const response = await fetch(`http://localhost:3000/save-game`, fetchOptions)
-      console.log(response)
+      // console.log(response)
     }
 
     buildBoard() {
@@ -295,7 +282,6 @@ class JanggiGame {
     makeMove(start, end, pass=false) {
       if (pass) {
         this.nextColor = this.nextColor === 'red' ? 'blue' : 'red'
-        this.saveGameToLocal()
         this.saveGameToDB([])
         return {valid: true, response: this.getHeaderText()}
       }
@@ -320,13 +306,11 @@ class JanggiGame {
           if (this.isInCheckmate(this.nextColor)) {
             this.gameOver = true
             this.winner = this.nextColor === 'red' ? 'blue' : 'red'
-            this.saveGameToLocal()
             this.saveGameToDB(piecesChanged)
             return {valid: true, response: this.getHeaderText()}
           }
         }
         // otherwise save game and return valid response
-        this.saveGameToLocal()
         this.saveGameToDB(piecesChanged)
         return {valid: true, response: this.getHeaderText()}
       } catch(e) {

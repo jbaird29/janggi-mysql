@@ -124,23 +124,21 @@ const getStartGameProps = () => {
   }
 }
 
-const getSavedGameProps = () => {
-  const gamePropsJSON = localStorage.getItem('gameProps');
-  try {
-    return gamePropsJSON ? JSON.parse(gamePropsJSON) : null;
-  } catch(e) {
-    console.log(e.message);
-    return null
-  }
-}
-
-const getGameProps = () => {
-  const savedGameProps = getSavedGameProps()
-  if (savedGameProps) {
-    // if gameProps were loaded from browser storage, convert the Pieces objects into Class instances
-    const cleanedPieces = savedGameProps.pieces.map(piece => new Piece({...piece}) )
-    savedGameProps.pieces = cleanedPieces
-    return savedGameProps
+const getGamePropsFromDB = async () => {
+  const localStorageGameID = localStorage.getItem('gameID')
+  const gameID = localStorageGameID ? localStorageGameID : null
+  if (gameID) {
+    // if gameID was found, get the gameProps from the DB for that gameID
+    try {
+      const response = await fetch(`http://localhost:3000/load-game?gameID=${gameID}`, { method: 'GET'})
+      const gameProps = await response.json()
+      const convertedPieces = gameProps.pieces.map(piece => new Piece({...piece}) )
+      gameProps.pieces = convertedPieces
+      return gameProps
+    } catch(e) {
+      console.log(e)
+      return null
+    }
   } else {
     // otherwise build an empty game
     return getStartGameProps()

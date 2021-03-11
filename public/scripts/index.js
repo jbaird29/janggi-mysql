@@ -1,11 +1,17 @@
 const moveEl = document.querySelector('#current-move')
 
-let game = new JanggiGame(getGameProps())
-game.renderGame()
-moveEl.innerHTML = game.getHeaderText()
+// let game = new JanggiGame(getGamePropsFromDB().then(value => console.log(value)))
+// game.renderGame()
+// moveEl.innerHTML = game.getHeaderText()
 
 let start = null;
 let end = null;
+let game = null;
+getGamePropsFromDB().then(props => {
+  game = new JanggiGame(props);
+  game.renderGame()
+  moveEl.innerHTML = game.getHeaderText()
+})
 
 document.querySelectorAll('.square').forEach(square => {
   square.addEventListener('click', (e) => {
@@ -56,7 +62,6 @@ document.getElementById('reset-btn').addEventListener('click', (e) => {
     game.clearSquareShading(game.getPiece(start))
   }
   game = new JanggiGame(getStartGameProps())
-  game.saveGameToLocal()
   game.saveGameToDB()
   game.renderGame()
   moveEl.innerHTML = game.getHeaderText()

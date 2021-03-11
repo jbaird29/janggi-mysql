@@ -32,3 +32,33 @@ module.exports.updatePiece = function(pieceID, gameID, color, type, square, isCa
     // console.log(sql)
     return sql
 }
+
+module.exports.getGame = function(gameID) {
+    const q_game_id       = mysql.escape(gameID);
+
+    const sql = 
+    `SELECT game_id AS id, 
+    UNIX_TIMESTAMP(start_time) AS startTime, 
+    UNIX_TIMESTAMP(end_time) AS endTime,
+    next_color AS nextColor,
+    game_over AS gameOver,
+    winner AS winner
+    FROM games
+    WHERE game_id = ${q_game_id}`
+    return sql
+}
+
+module.exports.getGamePieces = function(gameID) {
+    const q_game_id       = mysql.escape(gameID);
+
+    const sql = 
+    `SELECT piece_id AS id, 
+    game_id AS gameID, 
+    color AS color, 
+    type AS type,
+    square AS square,
+    is_captured AS isCaptured
+    FROM pieces
+    WHERE game_id = ${q_game_id}`
+    return sql
+}

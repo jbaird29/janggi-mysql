@@ -4,8 +4,8 @@ class JanggiGame {
       this.board = this.buildBoard()
     }
   
-    saveGave() {
-      const gamePropsToSave = {
+    saveGameToLocal() {
+      const gameProps = {
         id: this.id,
         startTime: this.startTime,
         endTime: this.endTime,
@@ -14,8 +14,23 @@ class JanggiGame {
         gameOver: this.gameOver,
         winner: this.winner
       }
-      localStorage.setItem('gameProps',JSON.stringify(gamePropsToSave))
+      localStorage.setItem('gameProps',JSON.stringify(gameProps))
       localStorage.setItem('gameID', this.id)
+    }
+
+    async saveGameToDB() {
+      const gameProps = {
+        id: this.id,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        pieces: this.pieces,
+        nextColor: this.nextColor,
+        gameOver: this.gameOver,
+        winner: this.winner
+      }
+      const fetchOptions = { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(gameProps)}
+      const response = await fetch(`http://localhost:3000/save-game`, fetchOptions)
+      console.log(response)
     }
 
     buildBoard() {
@@ -280,7 +295,8 @@ class JanggiGame {
     makeMove(start, end, pass=false) {
       if (pass) {
         this.nextColor = this.nextColor === 'red' ? 'blue' : 'red'
-        this.saveGave()
+        this.saveGameToLocal()
+        this.saveGameToDB()
         return {valid: true, response: this.getHeaderText()}
       }
       try {
@@ -303,12 +319,14 @@ class JanggiGame {
           if (this.isInCheckmate(this.nextColor)) {
             this.gameOver = true
             this.winner = this.nextColor === 'red' ? 'blue' : 'red'
-            this.saveGave()
+            this.saveGameToLocal()
+            this.saveGameToDB()
             return {valid: true, response: this.getHeaderText()}
           }
         }
         // otherwise save game and return valid response
-        this.saveGave()
+        this.saveGameToLocal()
+        this.saveGameToDB()
         return {valid: true, response: this.getHeaderText()}
       } catch(e) {
         console.log(e)

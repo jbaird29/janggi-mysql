@@ -56,7 +56,8 @@ document.getElementById('reset-btn').addEventListener('click', (e) => {
     game.clearSquareShading(game.getPiece(start))
   }
   game = new JanggiGame(getStartGameProps())
-  game.saveGave()
+  game.saveGameToLocal()
+  game.saveGameToDB()
   game.renderGame()
   moveEl.innerHTML = game.getHeaderText()
 })
